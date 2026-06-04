@@ -1,0 +1,55 @@
+import Constants from 'expo-constants';
+
+console.log("========================================");
+console.log("🔍 RUNTIME ENV DIAGNOSTIC");
+console.log("========================================");
+console.log("Full Constants.expoConfig:", JSON.stringify(Constants.expoConfig, null, 2));
+console.log("Constants.expoConfig.extra:", Constants.expoConfig?.extra);
+console.log("========================================");
+
+const extra = Constants.expoConfig?.extra || {};
+
+const SUPABASE_URL = 
+  extra.supabaseUrl || 
+  extra.SUPABASE_URL || 
+  extra.EXPO_PUBLIC_SUPABASE_URL || 
+  '';
+
+const SUPABASE_ANON_KEY = 
+  extra.supabaseAnonKey || 
+  extra.SUPABASE_ANON_KEY || 
+  extra.EXPO_PUBLIC_SUPABASE_ANON_KEY || 
+  '';
+
+const API_BASE_URL = 
+  extra.apiBaseUrl || 
+  extra.API_BASE_URL || 
+  extra.EXPO_PUBLIC_API_BASE_URL || 
+  'https://v0-referredbyappv2.vercel.app';
+
+export const ENV = {
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  API_BASE_URL,
+  isConfigured: Boolean(SUPABASE_URL && SUPABASE_ANON_KEY && 
+                       SUPABASE_URL !== 'MISSING_AT_BUILD_TIME' && 
+                       SUPABASE_ANON_KEY !== 'MISSING_AT_BUILD_TIME'),
+};
+
+console.log("🔧 ENV Configuration Status:");
+console.log({
+  SUPABASE_URL: ENV.SUPABASE_URL ? `✅ Set (${ENV.SUPABASE_URL.substring(0, 30)}...)` : '❌ Missing',
+  SUPABASE_ANON_KEY: ENV.SUPABASE_ANON_KEY ? '✅ Set (hidden)' : '❌ Missing',
+  API_BASE_URL: `✅ ${ENV.API_BASE_URL}`,
+  isConfigured: ENV.isConfigured ? '✅ YES' : '❌ NO',
+  buildTimestamp: extra.buildTimestamp || 'Not available'
+});
+console.log("========================================");
+
+if (!ENV.isConfigured) {
+  console.error("❌ CONFIGURATION ERROR DETAILS:");
+  console.error("Available extra keys:", Object.keys(extra));
+  console.error("Extra values:", extra);
+  console.error(`SUPABASE_URL: ${ENV.SUPABASE_URL || 'MISSING'}`);
+  console.error(`SUPABASE_ANON_KEY: ${ENV.SUPABASE_ANON_KEY ? 'Present but invalid' : 'MISSING'}`);
+}
