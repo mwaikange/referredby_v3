@@ -7,10 +7,10 @@ console.log("📍 Build-time environment check:", {
 
 export default {
   expo: {
-    name: "ReferredBy",
+    name: "referredby",
     slug: "referredby-mobile",
     owner: "referredby",
-    version: "1.0.9",
+    version: "3.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
